@@ -1,0 +1,5 @@
+.env
+build-secrets/*
+run-secrets/*
+test-run/*
+test-run-*/*

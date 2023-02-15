@@ -1,0 +1,10 @@
+image_params:
+    version_store_frontend:
+        docker_build_context: ""
+        dockerfile_path: Dockerfile
+        image: versionlens/version-store-frontend
+        registry: index.docker.io
+repo_dependencies:
+    version_store_frontend:
+        commit: $VERSION_STORE_FRONTEND_SHA
+        url: https://github.com/VersionLens/version-store-frontend.git

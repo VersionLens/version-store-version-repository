@@ -1,0 +1,88 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow                  
+metadata:
+  generateName: build-version-store-backend- 
+spec:
+  entrypoint: main
+  volumes:
+  - name: versionlens-regcred
+    secret:
+      secretName: versionlens-regcred
+      items:
+        - key: .dockerconfigjson
+          path: config.json
+  volumeClaimTemplates:
+  - metadata:
+      name: workspace
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+  templates:
+    - name: main
+      steps:
+        - - name: clone-github-repo
+            template: clone-github-repo
+            arguments:
+              parameters:
+                - name: repo
+                  value: "{{=jsonpath(workflow.parameters.repo_dependencies, '$.version_store_backend.url')}}"
+                - name: commit
+                  value: "{{=jsonpath(workflow.parameters.repo_dependencies, '$.version_store_backend.commit')}}"
+        - - name: build-push-docker
+            template: build-push-docker
+            arguments:
+              parameters:
+                - name: dockerfile
+                  value: "{{=jsonpath(workflow.parameters.image_params, '$.version_store_backend.dockerfile_path')}}"
+                - name: destination
+                  value: "{{=jsonpath(workflow.parameters.image_params, '$.version_store_backend.registry')}}/{{=jsonpath(workflow.parameters.image_params, '$.version_store_backend.image')}}:{{=jsonpath(workflow.parameters.repo_dependencies, '$.version_store_backend.commit')}}"
+                - name: relative_context
+                  value: "{{=jsonpath(workflow.parameters.image_params, '$.version_store_backend.docker_build_context')}}"
+    
+    # Templates
+    
+    - name: clone-github-repo
+      inputs:
+        parameters:
+          - name: repo
+          - name: commit
+      script:
+        image: alpine/git
+        # env:
+        #   - name: ARGO_DEBUG_PAUSE_BEFORE
+        #     value: 'true'
+        command: [ sh ]
+        # rm because EBS adds a "lost+found" in the mounted directory :(
+        source: |
+          rm -rf /workspace/*
+          git clone -n --progress {{inputs.parameters.repo}} /workspace
+          cd /workspace
+          git checkout {{inputs.parameters.commit}}
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+
+    - name: build-push-docker
+      inputs:
+        parameters:
+          - name: dockerfile
+          - name: destination
+          - name: relative_context
+      container:
+        image: gcr.io/kaniko-project/executor:latest
+        command: [/kaniko/executor]
+        args:
+          [
+            "--dockerfile={{inputs.parameters.dockerfile}}",
+            "--destination={{inputs.parameters.destination}}",
+            "--context=dir:///workspace/{{inputs.parameters.relative_context}}"
+          ]
+        workingDir: /workspace
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+          - name: versionlens-regcred
+            mountPath: /kaniko/.docker/
+

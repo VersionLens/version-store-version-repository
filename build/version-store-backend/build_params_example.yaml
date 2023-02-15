@@ -1,0 +1,10 @@
+image_params:
+    version_store_backend:
+        docker_build_context: ""
+        dockerfile_path: Dockerfile
+        image: versionlens/version-store-backend
+        registry: index.docker.io
+repo_dependencies:
+    version_store_backend:
+        commit: 4d2e34d0d86f29c6d3e425ddd73626dad0b35fd9
+        url: https://github.com/VersionLens/version-store-backend.git
