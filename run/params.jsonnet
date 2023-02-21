@@ -1,7 +1,7 @@
 {
   version_store_backend: {
     containerPort: 8000,
-    image: 'versionlens/version-store-backend',
+    image: 'versionlens/version-store-backend-arm64',
     name: 'version-store-backend',
     registry: 'docker.io',
     replicas: 1,
@@ -9,7 +9,7 @@
   },
   version_store_frontend: {
     containerPort: 5173,
-    image: 'versionlens/version-store-frontend',
+    image: 'versionlens/version-store-frontend-arm64',
     name: 'version-store-frontend',
     registry: 'docker.io',
     replicas: 1,

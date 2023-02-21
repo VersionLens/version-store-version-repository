@@ -2,7 +2,7 @@ image_params:
     version_store_frontend:
         docker_build_context: ""
         dockerfile_path: Dockerfile
-        image: versionlens/version-store-frontend
+        image: versionlens/version-store-frontend-arm64
         registry: index.docker.io
 repo_dependencies:
     version_store_frontend:
