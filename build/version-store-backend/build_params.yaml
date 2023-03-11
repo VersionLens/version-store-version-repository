@@ -2,9 +2,9 @@ image_params:
     version_store_backend:
         docker_build_context: ""
         dockerfile_path: Dockerfile
-        image: versionlens/version-store-backend
+        image: versionlens/version-store-backend-nodejs
         registry: index.docker.io
 repo_dependencies:
     version_store_backend:
         commit: $VERSION_STORE_BACKEND_SHA
-        url: https://github.com/VersionLens/version-store-backend.git
+        url: https://github.com/VersionLens/version-store-backend-nodejs.git

@@ -1,7 +1,7 @@
 {
   version_store_backend: {
-    containerPort: 8000,
-    image: 'versionlens/version-store-backend',
+    containerPort: 4000,
+    image: 'versionlens/version-store-backend-nodejs',
     name: 'version-store-backend',
     registry: 'docker.io',
     replicas: 1,
