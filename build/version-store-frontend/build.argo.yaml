@@ -4,6 +4,10 @@ metadata:
   generateName: build-version-store-frontend- 
 spec:
   entrypoint: main
+  tolerations:
+    - key: "versionlens.com/build-only"
+      operator: "Exists"
+      effect: "NoSchedule"
   volumes:
   - name: versionlens-regcred
     secret:
