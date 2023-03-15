@@ -24,6 +24,13 @@ local params = import 'params.jsonnet';
         },
       },
       spec: {
+        tolerations: [
+          {
+            key: 'versionlens.com/free-tier',
+            operator: 'Exists',
+            effect: 'NoSchedule',
+          },
+        ],
         containers: [
           {
             name: params.version_store_frontend.name,
