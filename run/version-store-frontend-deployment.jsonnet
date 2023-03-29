@@ -31,6 +31,25 @@ local params = import 'params.jsonnet';
             effect: 'NoSchedule',
           },
         ],
+        affinity: {
+          nodeAffinity: {
+            requiredDuringSchedulingIgnoredDuringExecution: {
+              nodeSelectorTerms: [
+                {
+                  matchExpressions: [
+                    {
+                      key: 'alpha.eksctl.io/nodegroup-name',
+                      operator: 'NotIn',
+                      values: [
+                        'managed-ng-1',
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
         volumes: [
           {
             name: 'version-store-frontend-code-pv-claim',
