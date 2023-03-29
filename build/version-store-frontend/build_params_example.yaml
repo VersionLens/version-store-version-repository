@@ -6,5 +6,5 @@ image_params:
         registry: index.docker.io
 repo_dependencies:
     version_store_frontend:
-        commit: 7107430265a701529877b5bffd0d855989dfc127
+        commit: 9d2e217806a5b6559bfdb41dbfb1b8d8cd5c179b
         url: https://github.com/VersionLens/version-store-frontend.git

@@ -31,6 +31,27 @@ local params = import 'params.jsonnet';
             effect: 'NoSchedule',
           },
         ],
+        volumes: [
+          {
+            name: 'version-store-frontend-code-pv-claim',
+            persistentVolumeClaim: {
+              claimName: 'version-store-frontend-code-pv-claim',
+            },
+          },
+        ],
+        initContainers: [
+          {
+            name: 'rm-rf-lost-found',
+            image: 'busybox:latest',
+            command: ['rm', '-rf', '/code/lost+found'],
+            volumeMounts: [
+              {
+                mountPath: '/code',
+                name: 'version-store-frontend-code-pv-claim',
+              },
+            ],
+          },
+        ],
         containers: [
           {
             name: params.version_store_frontend.name,
@@ -45,6 +66,12 @@ local params = import 'params.jsonnet';
               {
                 name: 'VITE_GRAPHQL_HTTP_HOST',
                 value: 'https://version-store-backend--' + std.extVar('VERSION_URL'),
+              },
+            ],
+            volumeMounts: [
+              {
+                mountPath: '/code',
+                name: 'version-store-frontend-code-pv-claim',
               },
             ],
             resources: {
