@@ -25,3 +25,6 @@ test-run:
 	python test-run.py
 	-kubectl create ns test--run--version-store
 	kubectl apply -n test--run--version-store -f test-run
+
+delete-test-run:
+	-kubectl delete ns test--run--version-store
