@@ -15,4 +15,12 @@
     replicas: 1,
     tag: std.extVar('VERSION_STORE_FRONTEND_SHA'),
   },
+  ai_code_editor: {
+    containerPort: 8000,
+    image: 'versionlens/ai-code-editor',
+    name: 'ai-code-editor',
+    registry: 'docker.io',
+    replicas: 1,
+    tag: std.extVar('AI_CODE_EDITOR_SHA'),
+  },
 }

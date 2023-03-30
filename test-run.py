@@ -16,7 +16,7 @@ Path(OUT_DIR).mkdir()
 
 jsonnet_files = RUN_DIR.glob("*.jsonnet")
 for x in jsonnet_files:
-    jsonnet_cmd = f"jsonnet --ext-str VERSION_NAME={VERSION_NAME} --ext-str VERSION_NAMESPACE={VERSION_NAMESPACE} --ext-str VERSION_URL={VERSION_URL} --ext-str VERSION_STORE_BACKEND_SHA=64f315daeeae3ebfc8ceb09825ed9cba5c56cddf --ext-str VERSION_STORE_FRONTEND_SHA=c80d8879e7ebc96a5391bf9f23a8cbb33b5fd97f {x} > {OUT_DIR}/{(x.with_suffix('.json')).name}"
+    jsonnet_cmd = f"jsonnet --ext-str VERSION_NAME={VERSION_NAME} --ext-str VERSION_NAMESPACE={VERSION_NAMESPACE} --ext-str VERSION_URL={VERSION_URL} --ext-str VERSION_STORE_BACKEND_SHA=64f315daeeae3ebfc8ceb09825ed9cba5c56cddf --ext-str VERSION_STORE_FRONTEND_SHA=c80d8879e7ebc96a5391bf9f23a8cbb33b5fd97f --ext-str AI_CODE_EDITOR_SHA=7f0446d2e2d6b59f4ccd1f5c696b4a4e687e5b1e {x} > {OUT_DIR}/{(x.with_suffix('.json')).name}"
     print(jsonnet_cmd)
     p = subprocess.run(jsonnet_cmd, shell=True, check=True)
 print("Jsonnet -> JSON files ✅")
