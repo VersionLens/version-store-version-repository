@@ -1,0 +1,10 @@
+image_params:
+    ai_code_editor:
+        docker_build_context: ""
+        dockerfile_path: Dockerfile
+        image: versionlens/ai-code-editor
+        registry: index.docker.io
+repo_dependencies:
+    ai_code_editor:
+        commit: $AI_CODE_EDITOR_SHA
+        url: git@github.com:VersionLens/ai-code-editor.git
