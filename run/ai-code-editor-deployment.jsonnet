@@ -112,13 +112,13 @@ local params = import 'params.jsonnet';
                 memory: '512Mi',
               },
             },
-            livenessProbe: {
-              httpGet: {
-                path: '/docs',
-                port: 8000,
-              },
-              initialDelaySeconds: 20,
-            },
+            // livenessProbe: {
+            //   httpGet: {
+            //     path: '/docs',
+            //     port: 8000,
+            //   },
+            //   initialDelaySeconds: 20,
+            // },
           },
         ],
       },
