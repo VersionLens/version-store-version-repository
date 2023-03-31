@@ -26,7 +26,21 @@ spec:
   templates:
     - name: main
       steps:
+        - - name: check-image-exists
+            templateRef:
+              clusterScope: true
+              name: "docker"
+              template: "check-image-exists"
+            continueOn:
+              failed: true
+            arguments:
+              parameters:
+                - name: image
+                  value: "{{=jsonpath(workflow.parameters.image_params, '$.version_store_backend.registry')}}/{{=jsonpath(workflow.parameters.image_params, '$.version_store_backend.image')}}:{{=jsonpath(workflow.parameters.repo_dependencies, '$.version_store_backend.commit')}}"
+                - name: regcred
+                  value: versionlens-regcred
         - - name: clone-github-repo
+            when: "{{steps.check-image-exists.exitCode}} != 0"
             template: clone-github-repo
             arguments:
               parameters:
@@ -35,6 +49,7 @@ spec:
                 - name: commit
                   value: "{{=jsonpath(workflow.parameters.repo_dependencies, '$.version_store_backend.commit')}}"
         - - name: build-push-docker
+            when: "{{steps.check-image-exists.exitCode}} != 0"
             template: build-push-docker
             arguments:
               parameters:
