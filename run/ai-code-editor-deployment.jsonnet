@@ -61,7 +61,7 @@ local params = import 'params.jsonnet';
             persistentVolumeClaim: {
               claimName: 'version-store-frontend-code-pv-claim',
             },
-          }
+          },
         ],
         initContainers: [
           {
@@ -95,17 +95,21 @@ local params = import 'params.jsonnet';
                     key: 'OPENAI_API_KEY',
                   },
                 },
-              }
+              },
+              {
+                name: 'AI_MODEL',
+                value: 'gpt-4-0314',
+              },
             ],
             volumeMounts: [
               {
                 mountPath: '/app/repos/version-store-frontend',
                 name: 'version-store-frontend-code-pv-claim',
-              }
+              },
             ],
             resources: {
               limits: {
-                memory: '256Mi',
+                memory: '512Mi',
               },
             },
             livenessProbe: {
