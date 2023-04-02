@@ -17,7 +17,7 @@
   },
   ai_code_editor: {
     containerPort: 8000,
-    image: 'versionlens/ai-code-editor',
+    image: 'versionlens/ai-code-editor-arm64',
     name: 'ai-code-editor',
     registry: 'docker.io',
     replicas: 1,
