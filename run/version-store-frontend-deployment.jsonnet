@@ -93,11 +93,6 @@ local params = import 'params.jsonnet';
                 name: 'version-store-frontend-code-pv-claim',
               },
             ],
-            resources: {
-              limits: {
-                memory: '512Mi',
-              },
-            },
             // livenessProbe: {
             //   httpGet: {
             //     path: '/_alive',
