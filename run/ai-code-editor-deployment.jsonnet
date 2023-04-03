@@ -62,6 +62,13 @@ local params = import 'params.jsonnet';
               claimName: 'version-store-frontend-code-pv-claim',
             },
           },
+          {
+            name: 'version-store-frontend-deploy-key',
+            secret: {
+              secretName: 'version-store-frontend-deploy-key',
+              defaultMode: 256,
+            },
+          },
         ],
         initContainers: [
           {
@@ -100,11 +107,23 @@ local params = import 'params.jsonnet';
                 name: 'AI_MODEL',
                 value: 'gpt-4-0314',
               },
+              {
+                name: 'VERSION_NAME',
+                value: std.extVar('VERSION_NAME'),
+              },
+              {
+                name: 'SET_UP_GIT',
+                value: 'true',
+              },
             ],
             volumeMounts: [
               {
                 mountPath: '/app/repos/version-store-frontend',
                 name: 'version-store-frontend-code-pv-claim',
+              },
+              {
+                mountPath: '/root/.ssh',
+                name: 'version-store-frontend-deploy-key',
               },
             ],
             resources: {
