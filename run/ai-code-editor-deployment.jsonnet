@@ -128,7 +128,7 @@ local params = import 'params.jsonnet';
             ],
             resources: {
               limits: {
-                memory: '512Mi',
+                memory: '256Mi',
               },
             },
             // livenessProbe: {

@@ -19,6 +19,6 @@ local params = import 'params.jsonnet';
     selector: {
       app: 'code-server',
     },
-    type: 'NodePort',
+    type: 'ClusterIP',
   },
 }
