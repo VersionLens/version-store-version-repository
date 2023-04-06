@@ -128,10 +128,10 @@ local params = import 'params.jsonnet';
             ],
             resources: {
               requests: {
-                memory: '2048Mi', # For fuzzy find and replace
+                memory: '7168Mi', # For fuzzy find and replace
               },
               limits: {
-                memory: '4096Mi',
+                memory: '7168Mi',
               },
             },
             // livenessProbe: {
