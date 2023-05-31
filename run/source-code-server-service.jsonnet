@@ -4,7 +4,7 @@ local params = import 'params.jsonnet';
   apiVersion: 'v1',
   kind: 'Service',
   metadata: {
-    name: 'code-server',
+    name: params.source_code_server.name,
     labels: {
       'versionlens.com/version': std.extVar('VERSION_NAME'),
     },
@@ -13,11 +13,11 @@ local params = import 'params.jsonnet';
     ports: [
       {
         port: 80,
-        targetPort: 8443,
+        targetPort: params.source_code_server.containerPort,
       },
     ],
     selector: {
-      app: 'code-server',
+      app: params.source_code_server.name,
     },
     type: 'NodePort',
   },

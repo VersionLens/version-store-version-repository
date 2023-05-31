@@ -15,12 +15,12 @@
     replicas: 1,
     tag: std.extVar('VERSION_STORE_FRONTEND_SHA'),
   },
-  ai_code_editor: {
+  source_code_server: {
     containerPort: 8000,
-    image: 'versionlens/ai-code-editor-arm64',
-    name: 'ai-code-editor',
+    image: 'versionlens/source-code-server',
+    name: 'source-code-server',
     registry: 'docker.io',
     replicas: 1,
-    tag: std.extVar('AI_CODE_EDITOR_SHA'),
+    tag: '7e5837009fb4987f9b85356c41f9fdce99b2e0f2',
   },
 }

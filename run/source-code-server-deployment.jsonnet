@@ -4,7 +4,7 @@ local params = import 'params.jsonnet';
   apiVersion: 'apps/v1',
   kind: 'Deployment',
   metadata: {
-    name: params.ai_code_editor.name,
+    name: params.source_code_server.name,
     labels: {
       'versionlens.com/version': std.extVar('VERSION_NAME'),
     },
@@ -13,13 +13,13 @@ local params = import 'params.jsonnet';
     replicas: 1,
     selector: {
       matchLabels: {
-        app: params.ai_code_editor.name,
+        app: params.source_code_server.name,
       },
     },
     template: {
       metadata: {
         labels: {
-          app: params.ai_code_editor.name,
+          app: params.source_code_server.name,
           'versionlens.com/version': std.extVar('VERSION_NAME'),
         },
       },
@@ -62,22 +62,26 @@ local params = import 'params.jsonnet';
               claimName: 'version-store-frontend-code-pv-claim',
             },
           },
-          {
-            name: 'version-store-frontend-deploy-key',
-            secret: {
-              secretName: 'version-store-frontend-deploy-key',
-              defaultMode: 256,
-            },
-          },
         ],
         initContainers: [
           {
-            name: 'wait-for-src',
+            name: 'rm-rf-lost-found-frontend',
             image: 'busybox:latest',
-            command: ['sh', '-c', 'until [ -d /app/repos/version-store-frontend/src ] && [ "$(ls -A /app/repos/version-store-frontend/src)" ]; do echo "Waiting for /app/repos/version-store-frontend/src to exist and not be empty"; sleep 5; done'],
+            command: ['rm', '-rf', '/code/lost+found'],
             volumeMounts: [
               {
-                mountPath: '/app/repos/version-store-frontend',
+                mountPath: '/code',
+                name: 'version-store-frontend-code-pv-claim',
+              },
+            ],
+          },
+          {
+            name: 'rm-rf-lost-found-backend',
+            image: 'busybox:latest',
+            command: ['rm', '-rf', '/code/lost+found'],
+            volumeMounts: [
+              {
+                mountPath: '/code',
                 name: 'version-store-frontend-code-pv-claim',
               },
             ],
@@ -85,27 +89,18 @@ local params = import 'params.jsonnet';
         ],
         containers: [
           {
-            name: params.ai_code_editor.name,
-            image: params.ai_code_editor.registry + '/' + params.ai_code_editor.image + ':' + params.ai_code_editor.tag,
+            name: params.source_code_server.name,
+            image: params.source_code_server.registry + '/' + params.source_code_server.image + ':' + params.source_code_server.tag,
             imagePullPolicy: 'Always',
             ports: [
               {
-                containerPort: 8000,
+                containerPort: params.source_code_server.containerPort,
               },
             ],
             env: [
               {
-                name: 'OPENAI_API_KEY',
-                valueFrom: {
-                  secretKeyRef: {
-                    name: 'openai-api-key',
-                    key: 'OPENAI_API_KEY',
-                  },
-                },
-              },
-              {
-                name: 'AI_MODEL',
-                value: 'gpt-4-0314',
+                name: 'CODE_PATH',
+                value: '/code',
               },
               {
                 name: 'VERSION_NAME',
@@ -118,22 +113,18 @@ local params = import 'params.jsonnet';
             ],
             volumeMounts: [
               {
-                mountPath: '/app/repos/version-store-frontend',
+                mountPath: '/code',
                 name: 'version-store-frontend-code-pv-claim',
-              },
-              {
-                mountPath: '/root/.ssh',
-                name: 'version-store-frontend-deploy-key',
               },
             ],
             resources: {
               limits: {
-                memory: '512Mi',
+                memory: '256Mi',
               },
             },
             // livenessProbe: {
             //   httpGet: {
-            //     path: '/docs',
+            //     path: '/_alive',
             //     port: 8000,
             //   },
             //   initialDelaySeconds: 20,
