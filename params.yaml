@@ -6,7 +6,3 @@ version-store-backend:
   - name: VERSION_STORE_BACKEND_SHA
     type: GIT_COMMIT_SHA
     description: The commit hash of the version-store-backend repo, e.g. 142b56b046d32eef4dc159359cb29d54a4c02b98
-ai-code-editor:
-  - name: AI_CODE_EDITOR_SHA
-    type: GIT_COMMIT_SHA
-    description: The commit hash of the ai-code-editor repo, e.g. 142b56b046d32eef4dc159359cb29d54a4c02b98
