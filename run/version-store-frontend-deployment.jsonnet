@@ -26,7 +26,7 @@ local params = import 'params.jsonnet';
       spec: {
         tolerations: [
           {
-            key: 'versionlens.com/paying-customer',
+            key: 'versionlens.com/free-tier',
             operator: 'Exists',
             effect: 'NoSchedule',
           },
