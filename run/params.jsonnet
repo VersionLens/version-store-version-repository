@@ -21,6 +21,6 @@
     name: 'source-code-server',
     registry: 'docker.io',
     replicas: 1,
-    tag: 'c6900445a7d81fd039549550241c07820c491246',
+    tag: 'edaa75e1171f7c3aa24d0797918731cd13916632',
   },
 }
