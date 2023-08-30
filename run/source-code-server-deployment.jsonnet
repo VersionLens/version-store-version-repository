@@ -31,7 +31,7 @@ local params = import 'params.jsonnet';
         ],
         tolerations: [
           {
-            key: 'versionlens.com/free-tier',
+            key: 'versionlens.com/paying-customer',
             operator: 'Exists',
             effect: 'NoSchedule',
           },
